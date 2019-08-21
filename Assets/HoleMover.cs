@@ -17,9 +17,15 @@ public class HoleMover : MonoBehaviour
     List<Vector3> offsets;
     Vector3 dir;
     float radTemp;
+
+    float scaleCache;
+    Vector3 posCache;
     // Start is called before the first frame update
     void Start()
     {
+        posCache = transform.position;
+        scaleCache = detectionRadius;
+
         radTemp = detectionRadius;
         vertIndexes = new List<int>();
         offsets = new List<Vector3>();
@@ -37,23 +43,24 @@ public class HoleMover : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         Vector3[] vertices = mesh.vertices;
         //hole manipulation
         for(int i = 0; i < vertIndexes.Count; i++){
-
             vertices[vertIndexes[i]] = transform.position + offsets[i]/radTemp * detectionRadius;
 
-            //make hole big
-            // dir = (transform.position - vertices[vertIndexes[i]]).normalized;
-            // vertices[vertIndexes[i]] -= dir * Time.deltaTime * 0.5f;
-
-            //move height
-            //vertices[vertIndexes[i]].z += Time.deltaTime;
         }
 
-        mesh.vertices = vertices;
-        filter.mesh = mesh;
-        meshCollider.sharedMesh = mesh;
+        if(transform.position != posCache || detectionRadius != scaleCache)
+        {
+            mesh.vertices = vertices;
+            filter.mesh = mesh;
+            meshCollider.sharedMesh = mesh;
+
+
+            posCache = transform.position;
+            scaleCache = detectionRadius;
+        }
     }
     
 
