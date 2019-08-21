@@ -16,9 +16,11 @@ public class HoleMover : MonoBehaviour
     List<int> vertIndexes; 
     List<Vector3> offsets;
     Vector3 dir;
+    float radTemp;
     // Start is called before the first frame update
     void Start()
     {
+        radTemp = detectionRadius;
         vertIndexes = new List<int>();
         offsets = new List<Vector3>();
         mesh = filter.mesh;
@@ -39,7 +41,7 @@ public class HoleMover : MonoBehaviour
         //hole manipulation
         for(int i = 0; i < vertIndexes.Count; i++){
 
-            vertices[vertIndexes[i]] = transform.position + offsets[i].normalized * detectionRadius;
+            vertices[vertIndexes[i]] = transform.position + offsets[i]/radTemp * detectionRadius;
 
             //make hole big
             // dir = (transform.position - vertices[vertIndexes[i]]).normalized;
